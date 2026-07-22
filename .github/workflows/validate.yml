@@ -1,0 +1,26 @@
+name: Validate
+
+# Validate this config repo on every push and pull request: build Kamino and run
+# `kamino validate` against the checked-out files, so a bad manifest, a
+# dependency cycle, a missing ref, or an arch without a source is caught before
+# anyone deploys it.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Install kamino
+        run: go install github.com/t0mer/kamino/cmd/kamino@latest
+
+      - name: Validate config
+        run: kamino validate --config-dir .
