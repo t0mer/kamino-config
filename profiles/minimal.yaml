@@ -1,0 +1,6 @@
+id: minimal
+name: Minimal Toolbox
+include:
+  - tools/jq
+  - tools/ripgrep
+  - tools/htop

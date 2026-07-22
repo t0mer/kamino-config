@@ -1,0 +1,9 @@
+id: dev
+name: Developer Workstation
+include:
+  - dev/*
+  - tools/*
+  - containers/docker
+  - containers/docker-compose
+overrides:
+  dev/go: { version: "1.23.4" }

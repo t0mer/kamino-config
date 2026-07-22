@@ -1,0 +1,40 @@
+id: dev
+name: Development
+order: 10
+items:
+  - id: go
+    name: Go
+    type: tarball
+    version: "1.24.5"
+    source:
+      amd64: "https://go.dev/dl/go{version}.linux-amd64.tar.gz"
+      arm64: "https://go.dev/dl/go{version}.linux-arm64.tar.gz"
+    install_dir: /usr/local
+    path_export: /usr/local/go/bin
+    timeout: 10m
+    check: "go version"
+    check_contains: "go{version}"
+
+  - id: python
+    name: Python
+    type: apt
+    version: "3.12"
+    packages: ["python{version}", "python{version}-venv", "python3-pip"]
+    check: "python{version} --version"
+    check_contains: "Python {version}"
+
+  - id: pypi-base
+    name: Base PyPI packages
+    type: pip
+    python: "3.12"
+    packages: ["loguru", "httpx", "rich"]
+    depends_on: ["dev/python"]
+    check: "python3.12 -m pip show loguru"
+    check_contains: "Name: loguru"
+
+  - id: uv
+    name: uv (Python package manager)
+    type: script
+    source: "https://astral.sh/uv/install.sh"
+    check: "uv --version"
+    check_contains: "uv "
