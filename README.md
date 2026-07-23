@@ -30,7 +30,7 @@ Four categories:
 | Category | Items |
 |---|---|
 | **dev** | Go (tarball), Python 3.12 (apt), base PyPI packages (pip), uv (script) |
-| **tools** | jq, ripgrep, htop (apt), yq (binary) |
+| **tools** | jq, ripgrep, htop (apt), yq (binary), a login banner (script, from `scripts/`) |
 | **containers** | Docker Engine (script), Docker Compose plugin (apt), ctop (binary), Prometheus + Grafana monitoring stack (compose_stack) |
 | **network** | Cloudflare Tunnel (deb, with a `CF_TUNNEL_TOKEN` secret), Tailscale (script) |
 
@@ -60,6 +60,8 @@ kamino-config/
 │   ├── production.yaml
 │   ├── dev.yaml
 │   └── minimal.yaml
+├── scripts/                 # shell scripts referenced by script items (source: scripts/…)
+│   └── setup-motd.sh
 └── stacks/                  # docker-compose stacks referenced by compose_stack items
     └── monitoring/
         ├── docker-compose.yaml
@@ -95,7 +97,7 @@ Common item fields:
 |---|---|
 | `id`, `name`, `type` | required; `type` ∈ `apt`, `deb`, `tarball`, `binary`, `pip`, `script`, `compose_stack`, `snap` |
 | `version` | version string; `{version}` is templated into `source`, `check`, etc. |
-| `source` | download URL — a string, or a per-arch `{amd64, arm64}` map (must be `https://`) |
+| `source` | download URL — a string, or a per-arch `{amd64, arm64}` map (must be `https://`). A `script` item may instead give a repo-relative path (e.g. `scripts/foo.sh`), fetched from the config repo at run time |
 | `sha256` | expected digest (string or per-arch map); verified before install. **Absent → the plan warns and the download is unverified** |
 | `packages` | apt/pip package list |
 | `repo` | apt repo/PPA to add first |
