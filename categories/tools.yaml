@@ -32,3 +32,10 @@ items:
       arm64: "https://github.com/mikefarah/yq/releases/download/v{version}/yq_linux_arm64"
     check: "yq --version"
     check_contains: "{version}"
+
+  - id: motd
+    name: Login banner
+    type: script
+    source: "scripts/setup-motd.sh"
+    check: "cat /etc/motd.kamino"
+    check_contains: "Provisioned by Kamino"
